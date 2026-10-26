@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>List of Loomians by Speed tiers</title>
+<title>List of Loomians by Spleen tiers</title>
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -478,13 +478,24 @@
     margin-top: 6px;
     min-height: 1.2em;
   }
+
+  .checkmark-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .checkmark-row .calc-check {
+    padding-top: 0;
+  }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>List of Loomians by Speed tiers</h1>
+  <h1>List of Loomians by Spleen tiers</h1>
 
-  <p>The <strong>Speed</strong> stat determines the order in which Loomians act in battle.
+  <p>The <strong>Spleen</strong> stat determines the order in which Loomians act in battle.
   The following is a list of all Loomians by their Speed tiers at level 50
   calculated across every relevant personality, UP
   investment, and applicable abilities, moves, and weather conditions. This is in beta i might have screwed something up lmao go message me if i didnt do something correctly. it does seem to damage calculator's speed calculator'</p>
@@ -517,14 +528,6 @@
         <label for="calcUps">UPs (0-40)</label>
         <input type="number" id="calcUps" min="0" max="40" step="2" value="40">
       </div>
-      <div class="calc-field calc-check">
-        <input type="checkbox" id="calcBoots">
-        <label for="calcBoots" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Boots (+50%)</label>
-      </div>
-      <div class="calc-field calc-check">
-        <input type="checkbox" id="calcWind">
-        <label for="calcWind" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Wind (Air +25%)</label>
-      </div>
       <div class="calc-field">
         <label for="calcStage">Stat Stage</label>
         <select id="calcStage">
@@ -543,7 +546,18 @@
           <option value="-6">-6 (×¼)</option>
         </select>
       </div>
-      <div class="calc-field calc-check">
+    </div>
+
+    <div class="checkmark-row">
+      <div class="calc-check">
+        <input type="checkbox" id="calcBoots">
+        <label for="calcBoots" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Boots (+50%)</label>
+      </div>
+      <div class="calc-check">
+        <input type="checkbox" id="calcWind">
+        <label for="calcWind" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Wind (Air +25%)</label>
+      </div>
+      <div class="calc-check">
         <input type="checkbox" id="calcWeather">
         <label for="calcWeather" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Speed Doubling Ability</label>
       </div>
@@ -611,7 +625,7 @@
       </div>
       <div class="calc-field calc-check" id="targetDoublingWrap" style="display:none;">
         <input type="checkbox" id="calcTargetDoubling">
-        <label for="calcTargetDoubling" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Target Speed Doubling</label>
+        <label for="calcTargetDoubling" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Speed Doubling Ability</label>
       </div>
     </div>
 
@@ -761,8 +775,7 @@ Babore|62|46|60|60|30|30|38
 Boarrok|102|71|110|95|59|70|68
 Geklow|50|55|50|45|68|50|67
 Eleguana|80|80|55|85|90|115|80
-Slugling|70|41|10|10|50|70|45
-Escargrow|90|65|35|20|65|90|50
+Slugling|70|41|10|10|50|70|45Escargrow|90|65|35|20|65|90|50
 Gastroak|120|88|60|40|92|120|55
 Gastroak_Terraform|140|88|60|45|107|140|65
 Kabunga|52|53|76|43|64|34|86
@@ -1132,7 +1145,10 @@ const formMap = {
   "Gargolem_Speed": ["Gargolem","Speed"],
   "Celesting_Stellarchime": ["Celesting","Stellarchime"]
 };
-
+const searchAliases = {
+    "whopper": ["Goppie"],
+    "pickle" : ["Snicle"]
+}
 function getDisplay(key) {
   if (formMap[key]) {
     const [b, f] = formMap[key];
@@ -1329,14 +1345,6 @@ function buildEntries(loomian, opts, level = 50) {
     ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots)]
     : [{ mult: 1.0, label: null }];
 
-  const filteredStageOptions = stageOptions.filter(st => {
-    if (!opts.includeBoots) {
-      if (st.bootsOnly) return false;
-      if (st.label && st.label.toLowerCase().includes("boots")) return false;
-    }
-    return true;
-  });
-
   const windOptions = (opts.includeWind && airLoomians.has(key))
     ? [{ mult: 1.0, labels: [] }, { mult: 1.25, labels: ["Wind (+25%)"] }]
     : [{ mult: 1.0, labels: [] }];
@@ -1351,7 +1359,7 @@ function buildEntries(loomian, opts, level = 50) {
   };
 
   for (const w of [{ mult: 1.0, labels: [] }, ...weatherMods]) {
-    for (const st of filteredStageOptions) {
+    for (const st of stageOptions) {
       for (const wi of windOptions) {
         const parts = [];
         if (w.labels.length) parts.push(w.labels.join(" + "));
@@ -1490,14 +1498,14 @@ function parseTierInput() {
     return isNaN(n) ? null : n;
   };
 
-  let lo = toNum(tMin);
-  let hi = toNum(tMax);
-  if (lo === null && hi === null) return null;
-  if (lo === null) lo = hi;
-  if (hi === null) hi = lo;
-  if (lo > hi) [lo, hi] = [hi, lo];
+  let low = toNum(tMin);
+  let high = toNum(tMax);
+  if (low === null && high === null) return null;
+  if (low === null) low = high;
+  if (high === null) high = low;
+  if (low > high) [low, high] = [high, low];
 
-  return { min: lo, max: hi, mode: tierUseBase.checked ? "base" : "speed" };
+  return { min: low, max: high, mode: tierUseBase.checked ? "base" : "speed" };
 }
 
 function renderTierStatus() {
@@ -1545,7 +1553,6 @@ tierUseBase.addEventListener("change", () => {
   if (tierFilter) applyTierFilter();
 });
 
-
 function render() {
   if (!tableReady) {
     tbody.innerHTML = "";
@@ -1558,7 +1565,24 @@ function render() {
     if (filter) {
       const hay = (e.name + " " + e.personality + " " + e.modifier + " " + e.base + " " + e.tp + " " + e.up)
         .toLowerCase();
-      if (!hay.includes(filter)) return false;
+      let match = hay.includes(filter);
+
+      if (!match) {
+        const display = getDisplay(e.key).toLowerCase();
+        const keyLower = e.key.toLowerCase();
+        for (const alias in searchAliases) {
+          if (!alias.startsWith(filter)) continue;
+          if (searchAliases[alias].some(target => {
+            const t = target.toLowerCase();
+            return display === t || display.startsWith(t + " ") || keyLower === t;
+          })) {
+            match = true;
+            break;
+          }
+        }
+      }
+
+      if (!match) return false;   // ✅ now inside `if (filter)`, `match` in scope
     }
     if (tierFilter) {
       const val = tierFilter.mode === "speed" ? e.speed : e.base;
@@ -1588,10 +1612,14 @@ function render() {
   for (const e of rows) {
     const tierStart = (e.speed !== prevSpeed) ? " tier-start" : "";
     prevSpeed = e.speed;
+    let nameHtml = esc(getDisplay(e.key));
+    if (e.key === "Snicle") {
+      nameHtml = `<span style="color:#0645ad; font-weight:700;">haha snicle</span>`;
+    }
     parts.push(
       `<tr class="row${tierStart}">` +
         `<td class="speed">${e.speed}</td>` +
-        `<td class="name">${esc(getDisplay(e.key))}</td>` +
+        `<td class="name">${nameHtml}</td>` +
         `<td class="num">${e.base}</td>` +
         `<td class="${personalityClass(e.personality)}">${esc(e.personality)}</td>` +
         `<td class="num">${esc(e.tp)}</td>` +
@@ -1626,7 +1654,6 @@ filterEl.addEventListener("input", render);
 asianModeEl.addEventListener("change", () => {
   document.body.classList.toggle("asian-mode", asianModeEl.checked);
 });
-
 
 const calcName = document.getElementById("calcName");
 const calcBase = document.getElementById("calcBase");
@@ -1840,28 +1867,28 @@ calcRun.addEventListener("click", () => {
   const maxPersonality = nameL && noStrongPersonality.has(nameL.key) ? 1.1 : 1.2;
   if (pv < maxPersonality) {
     const testPv = maxPersonality;
-    let lo = 0, hi = 200, found = -1;
-    while (lo <= hi) {
-      const mid = (lo + hi) >> 1;
+    let low = 0, high = 200, found = -1;
+    while (low <= high) {
+      const mid = (low + high) >> 1;
       const inner = Math.floor((2 * base + mid / 4) * 50 / 100 + 5);
       const stat = inner + Math.floor(up / 2);
       const testSpeed = Math.floor(Math.floor(stat * testPv) * baseMultiplier);
-      if (testSpeed >= needed) { found = mid; hi = mid - 1; }
-      else lo = mid + 1;
+      if (testSpeed >= needed) { found = mid; high = mid - 1; }
+      else low = mid + 1;
     }
     if (found >= 0 && found < minTp) {
       notes.push(`${maxPersonality === 1.2 ? "Very Nimble (+20%)" : "Nimble (+10%)"} would drop this to ${found} TPs`);
     }
   }
   if (!hasBoots) {
-    let lo = 0, hi = 200, found = -1;
-    while (lo <= hi) {
-      const mid = (lo + hi) >> 1;
+    let low = 0, high = 200, found = -1;
+    while (low <= high) {
+      const mid = (low + high) >> 1;
       const inner = Math.floor((2 * base + mid / 4) * 50 / 100 + 5);
       const stat = inner + Math.floor(up / 2);
       const testSpeed = Math.floor(Math.floor(stat * pv) * baseMultiplier * 1.5);
-      if (testSpeed >= needed) { found = mid; hi = mid - 1; }
-      else lo = mid + 1;
+      if (testSpeed >= needed) { found = mid; high = mid - 1; }
+      else low = mid + 1;
     }
     if (found >= 0 && found < minTp) {
       notes.push(`Boots would drop this to ${found} TPs`);
