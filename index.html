@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>List of Loomians by Speed tiers</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f6f7f9;
+    color: #202122;
+    margin: 0;
+    padding: 24px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #c8ccd1;
+    border-radius: 6px;
+    padding: 24px 32px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+  h1 {
+    font-size: 1.9em;
+    border-bottom: 1px solid #a2a9b1;
+    padding-bottom: 6px;
+    margin-top: 0;
+  }
+  h2 {
+    font-size: 1.4em;
+    border-bottom: 1px solid #eaecf0;
+    padding-bottom: 4px;
+    margin-top: 32px;
+  }
+  p { margin: 0.6em 0; }
+  code, .formula {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    background: #f3f4f6;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .formula {
+    display: block;
+    padding: 10px 14px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-size: 0.95em;
+  }
+  ul { margin: 0.4em 0 0.4em 1.2em; }
+  li { margin: 0.2em 0; }
+  .table-wrap {
+    max-height: 80vh;
+    overflow: auto;
+    border: 1px solid #c8ccd1;
+    border-radius: 4px;
+    margin-top: 12px;
+  }
+  table.speed {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+  }
+  table.speed thead th {
+    position: sticky;
+    top: 0;
+    background: #eaecf0;
+    border-bottom: 2px solid #a2a9b1;
+    padding: 8px 10px;
+    text-align: left;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 2;
+  }
+  table.speed thead th .arrow {
+    font-size: 0.7em;
+    margin-left: 4px;
+    opacity: 0.35;
+  }
+  table.speed thead th.sorted-asc .arrow::after { content: "\25B2"; opacity: 1; }
+  table.speed thead th.sorted-desc .arrow::after { content: "\25BC"; opacity: 1; }
+  table.speed thead th:not(.sorted-asc):not(.sorted-desc) .arrow::after { content: "\25B2\25BC"; }
+  table.speed tbody td {
+    padding: 5px 10px;
+    border-bottom: 1px solid #eaecf0;
+    vertical-align: top;
+  }
+  table.speed tbody tr:hover { background: #eaf3ff; }
+  table.speed tbody tr.tier-start td {
+    border-top: 2px solid #b9c0c8;
+  }
+  td.speed {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: #0645ad;
+    white-space: nowrap;
+  }
+  td.num {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .personality-VeryNimble { color: #b32424;}
+  .personality-Nimble      { color: #ac6600;}
+  .personality-Neutral     { color: #54595d;}
+  .personality-Sluggish    { color: #14866d;}
+  .personality-VerySluggish{ color: #0b6e4f;}
+  body.asian-mode .personality-VeryNimble { color: #14866d; }
+  body.asian-mode .personality-Nimble      { color: #14866d; }
+  body.asian-mode .personality-Sluggish    { color: #b32424; }
+  body.asian-mode .personality-VerySluggish{ color: #b32424; }
+  .mod-Wind      { color: #2a6f9e; }
+  .mod-Boots     { color: #7a3e9e; }
+  .mod-Rain      { color: #1c6fa8; }
+  .mod-Sun       { color: #b35900; }
+  .mod-Thunder   { color: #8a7300; }
+  .mod-Fog       { color: #4a5a6a; }
+  .mod-Sugar     { color: #c2410c; }
+  .mod-Accel     { color: #c0392b; }
+  .mod-RevUp     { color: #d35400; }
+  .mod-Priority  { color: #8e44ad; }
+  .mod-None      { color: #a2a9b1; }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin: 12px 0;
+  }
+  .controls input[type="text"] {
+    flex: 1 1 240px;
+    padding: 7px 10px;
+    border: 1px solid #a2a9b1;
+    border-radius: 4px;
+    font-size: 0.95em;
+  }
+  .controls .count { color: #54595d; font-size: 0.9em; }
+  .controls label.toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9em;
+    color: #54595d;
+    user-select: none;
+    cursor: pointer;
+  }
+  .controls label.toggle input { width: 16px; height: 16px; }
+  a { color: #0645ad; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .note { font-size: 0.9em; color: #54595d; }
+
+  .calc-panel {
+    background: #f8f9fb;
+    border: 1px solid #c8ccd1;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 16px 0 24px 0;
+  }
+  .calc-panel h2 {
+    margin-top: 0;
+    border-bottom: none;
+    font-size: 1.25em;
+  }
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px 16px;
+    margin-bottom: 14px;
+  }
+  .calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .calc-field label {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #54595d;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .calc-field select,
+  .calc-field input[type="number"],
+  .calc-field input[type="text"] {
+    padding: 6px 8px;
+    border: 1px solid #a2a9b1;
+    border-radius: 4px;
+    font-size: 0.92em;
+    background: #fff;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .calc-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+    padding-top: 18px;
+    color: #54595d;
+    cursor: pointer;
+    user-select: none;
+  }
+  .calc-check input { width: 17px; height: 17px; }
+  .calc-btn {
+    padding: 8px 18px;
+    background: #0645ad;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .calc-btn:hover { background: #053a8f; }
+  .calc-result {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 5px;
+    background: #eaf3ff;
+    border-left: 4px solid #0645ad;
+    font-size: 0.95em;
+    display: none;
+  }
+  .calc-result.error {
+    background: #fdecea;
+    border-left-color: #b32424;
+    color: #7a1a1a;
+  }
+  .calc-result.impossible {
+    background: #fff4e5;
+    border-left-color: #b35900;
+    color: #6b3a00;
+  }
+  .calc-result.tie {
+    background: #f0eafc;
+    border-left-color: #7a3e9e;
+    color: #4a2a6a;
+  }
+  .calc-result .big {
+    font-size: 1.35em;
+    font-weight: 700;
+    color: #0645ad;
+    display: block;
+    margin: 4px 0;
+  }
+  .calc-result.impossible .big { color: #b35900; }
+  .calc-result.tie .big { color: #7a3e9e; }
+  .calc-result .sub {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.88em;
+    color: #54595d;
+  }
+  .calc-result .bullet {
+    display: block;
+    margin-top: 4px;
+  }
+
+  .tier-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 4px 0;
+    font-size: 0.95em;
+    color: #3a4a5e;
+    user-select: none;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .tier-toggle-row input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+  }
+
+  .tier-panel {
+    display: none;
+    background: #f0f7ff;
+    border: 1px solid #9bbce0;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 10px 0 24px 0;
+  }
+  .tier-panel.open {
+    display: block;
+  }
+  .tier-panel h2 {
+    margin-top: 0;
+    border-bottom: none;
+    font-size: 1.15em;
+    color: #0645ad;
+    margin-bottom: 8px;
+  }
+  .tier-panel .help-text {
+    font-size: 0.9em;
+    color: #3a4a5e;
+    background: #e2efff;
+    border-left: 7px solid #0645ad;
+    border-radius: 0 4px 4px 0;
+    padding: 8px 14px;
+    margin: 0 0 14px 0;
+    line-height: 1.55;
+  }
+  .tier-panel .help-text code {
+    background: #fff;
+    border: 1px solid #b9d3ee;
+  }
+  .tier-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: flex-end;
+  }
+  .tier-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .tier-field label {
+    font-size: 0.82em;
+    font-weight: 600;
+    color: #3a4a5e;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .tier-field input[type="number"] {
+    padding: 7px 10px;
+    border: 1px solid #9bbce0;
+    border-radius: 4px;
+    font-size: 0.95em;
+    background: #fff;
+    width: 130px;
+    box-sizing: border-box;
+  }
+  .tier-field input[type="number"]:focus {
+    outline: 2px solid #0645ad;
+    outline-offset: 1px;
+  }
+  .tier-field label.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #3a4a5e;
+    cursor: pointer;
+    user-select: none;
+    padding-bottom: 8px;
+    white-space: nowrap;
+  }
+  .tier-field label.checkbox-label input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+  }
+  .tier-btn {
+    padding: 8px 18px;
+    background: #0645ad;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.95em;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .tier-btn:hover { background: #053a8f; }
+  .tier-btn.secondary {
+    background: #e8eef5;
+    color: #0645ad;
+    border: 1px solid #9bbce0;
+  }
+  .tier-btn.secondary:hover { background: #d6e4f5; }
+  .tier-status {
+    font-size: 0.9em;
+    color: #3a4a5e;
+    margin-top: 12px;
+    min-height: 1.2em;
+  }
+  .tier-status .tier-chip {
+    display: inline-block;
+    background: #0645ad;
+    color: #fff;
+    border-radius: 12px;
+    padding: 1px 12px;
+    margin: 2px 4px 2px 0;
+    font-weight: 600;
+    font-size: 0.88em;
+    font-variant-numeric: tabular-nums;
+  }
+  .tier-status .tier-chip.base {
+    background: #7a3e9e;
+  }
+  .tier-status .tier-chip.clear {
+    background: #b32424;
+    cursor: pointer;
+    font-weight: 400;
+  }
+  .tier-status .tier-chip.clear:hover {
+    background: #8a1a1a;
+  }
+
+  .scenario-panel {
+    background: #f0f7ff;
+    border: 1px solid #9bbce0;
+    border-radius: 6px;
+    padding: 14px 20px;
+    margin: 14px 0;
+  }
+  .scenario-panel .help-text {
+    font-size: 0.88em;
+    color: #3a4a5e;
+    margin: 0 0 10px 0;
+  }
+  .scenario-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    align-items: center;
+  }
+  .scenario-grid label.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #3a4a5e;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+  }
+  .scenario-grid label.checkbox-label input {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+  }
+  .scenario-grid .scenario-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: center;
+    border-left: 2px solid #b9d3ee;
+    padding-left: 14px;
+  }
+  .scenario-grid .scenario-group-title {
+    font-size: 0.78em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #7a899b;
+    width: 100%;
+    margin-bottom: 2px;
+  }
+  .gen-warning {
+    background: #fff4e5;
+    border: 1px solid #f0c78a;
+    border-left: 4px solid #b35900;
+    color: #6b3a00;
+    border-radius: 4px;
+    padding: 12px 16px;
+    font-size: 0.92em;
+    margin: 12px 0;
+  }
+  .gen-warning strong { color: #b35900; }
+  .gen-btn-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 12px 0;
+  }
+  .gen-status {
+    font-size: 0.9em;
+    color: #3a4a5e;
+    margin-top: 6px;
+    min-height: 1.2em;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>List of Loomians by Speed tiers</h1>
+
+  <p>The <strong>Speed</strong> stat determines the order in which Loomians act in battle.
+  The following is a list of all Loomians by their Speed tiers at level 50
+  calculated across every relevant personality, UP
+  investment, and applicable abilities, moves, and weather conditions. This is in beta i might have screwed something up lmao go message me if i didnt do something correctly. it does seem to damage calculator's speed calculator'</p>
+
+  <div class="calc-panel">
+    <h2>Speed Tier Calculator</h2>
+    <p class="note">Find out how many Speed TPs a Loomian needs to outspeed a target speed value, or a specific Loomian under given conditions.</p>
+
+    <div class="calc-grid">
+      <div class="calc-field">
+        <label for="calcName">Your Loomian</label>
+        <input type="text" id="calcName" list="loomianList" placeholder="e.g. Nymaurae" autocomplete="off">
+        <datalist id="loomianList"></datalist>
+      </div>
+      <div class="calc-field">
+        <label for="calcBase">Base Speed</label>
+        <input type="number" id="calcBase" min="1" max="200" placeholder="auto">
+      </div>
+      <div class="calc-field">
+        <label for="calcPersonality">Personality</label>
+        <select id="calcPersonality">
+          <option value="1.2">Very Nimble (+20%)</option>
+          <option value="1.1">Nimble (+10%)</option>
+          <option value="1.0" selected>Neutral</option>
+          <option value="0.9">Sluggish (-10%)</option>
+          <option value="0.8">Very Sluggish (-20%)</option>
+        </select>
+      </div>
+      <div class="calc-field">
+        <label for="calcUps">UPs (0-40)</label>
+        <input type="number" id="calcUps" min="0" max="40" step="2" value="40">
+      </div>
+      <div class="calc-field calc-check">
+        <input type="checkbox" id="calcBoots">
+        <label for="calcBoots" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Boots (+50%)</label>
+      </div>
+      <div class="calc-field calc-check">
+        <input type="checkbox" id="calcWind">
+        <label for="calcWind" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Wind (Air +25%)</label>
+      </div>
+      <div class="calc-field">
+        <label for="calcStage">Stat Stage</label>
+        <select id="calcStage">
+          <option value="0" selected>0 (×1)</option>
+          <option value="1">+1 (×1.5)</option>
+          <option value="2">+2 (×2)</option>
+          <option value="3">+3 (×2.5)</option>
+          <option value="4">+4 (×3)</option>
+          <option value="5">+5 (×3.5)</option>
+          <option value="6">+6 (×4)</option>
+          <option value="-1">-1 (×⅔)</option>
+          <option value="-2">-2 (×½)</option>
+          <option value="-3">-3 (×⅖)</option>
+          <option value="-4">-4 (×⅓)</option>
+          <option value="-5">-5 (×2/7)</option>
+          <option value="-6">-6 (×¼)</option>
+        </select>
+      </div>
+      <div class="calc-field calc-check">
+        <input type="checkbox" id="calcWeather">
+        <label for="calcWeather" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Speed Doubling Ability</label>
+      </div>
+    </div>
+
+    <div class="calc-grid" style="margin-top:6px;">
+      <div class="calc-field" style="grid-column: span 2;">
+        <label for="calcTargetMode">Target</label>
+        <select id="calcTargetMode">
+          <option value="none">No Target (just show speed)</option>
+          <option value="value" selected>Target Speed Value</option>
+          <option value="loomian">Target Loomian</option>
+        </select>
+      </div>
+      <div class="calc-field" id="targetValueWrap">
+        <label for="calcTargetSpeed">Target Speed</label>
+        <input type="number" id="calcTargetSpeed" min="1" placeholder="e.g. 178">
+      </div>
+      <div class="calc-field" id="targetLoomianWrap" style="display:none;">
+        <label for="calcTargetName">Target Loomian</label>
+        <input type="text" id="calcTargetName" list="loomianList" placeholder="e.g. Halvantic" autocomplete="off">
+      </div>
+      <div class="calc-field" id="targetTpWrap" style="display:none;">
+        <label for="calcTargetTp">Target Speed TPs</label>
+        <input type="number" id="calcTargetTp" min="0" max="200" value="200">
+      </div>
+      <div class="calc-field" id="targetPersonalityWrap" style="display:none;">
+        <label for="calcTargetPersonality">Target Personality</label>
+        <select id="calcTargetPersonality">
+          <option value="1.2">Very Nimble (+20%)</option>
+          <option value="1.1">Nimble (+10%)</option>
+          <option value="1.0" selected>Neutral</option>
+          <option value="0.9">Sluggish (-10%)</option>
+          <option value="0.8">Very Sluggish (-20%)</option>
+        </select>
+      </div>
+      <div class="calc-field" id="targetBootsWrap" style="display:none;">
+        <label for="calcTargetBoots">Target Boots</label>
+        <select id="calcTargetBoots">
+          <option value="0" selected>No Boots</option>
+          <option value="1">Boots (+50%)</option>
+        </select>
+      </div>
+      <div class="calc-field" id="targetUpsWrap" style="display:none;">
+        <label for="calcTargetUps">Target UPs (0-40)</label>
+        <input type="number" id="calcTargetUps" min="0" max="40" step="2" value="40">
+      </div>
+      <div class="calc-field" id="targetStageWrap" style="display:none;">
+        <label for="calcTargetStage">Target Stage</label>
+        <select id="calcTargetStage">
+          <option value="0" selected>0 (×1)</option>
+          <option value="1">+1 (×1.5)</option>
+          <option value="2">+2 (×2)</option>
+          <option value="3">+3 (×2.5)</option>
+          <option value="4">+4 (×3)</option>
+          <option value="5">+5 (×3.5)</option>
+          <option value="6">+6 (×4)</option>
+          <option value="-1">-1 (×⅔)</option>
+          <option value="-2">-2 (×½)</option>
+          <option value="-3">-3 (×⅖)</option>
+          <option value="-4">-4 (×⅓)</option>
+          <option value="-5">-5 (×2/7)</option>
+          <option value="-6">-6 (×¼)</option>
+        </select>
+      </div>
+      <div class="calc-field calc-check" id="targetDoublingWrap" style="display:none;">
+        <input type="checkbox" id="calcTargetDoubling">
+        <label for="calcTargetDoubling" style="text-transform:none; letter-spacing:0; font-size:0.95em; font-weight:600;">Target Speed Doubling</label>
+      </div>
+    </div>
+
+    <button class="calc-btn" id="calcRun">Calculate</button>
+    <div class="calc-result" id="calcResult"></div>
+  </div>
+
+  <h2>List of Loomians by Speed</h2>
+
+  <label class="tier-toggle-row" for="tierRangeToggle">
+    <input type="checkbox" id="tierRangeToggle">
+    Filter by a speed tier or base stat range
+  </label>
+
+  <div class="tier-panel" id="tierPanel">
+    <h2>Speed Tier Range</h2>
+    <div class="help-text">
+      <strong>How to use:</strong> Enter a single speed tier in either box — e.g. 90 — to see every Loomian that can hit exactly that Speed value.
+      Or enter a <em>range</em> — e.g. <code>80</code> to <code>100</code> — to see everything within that span (inclusive).
+    </div>
+
+    <div class="tier-grid">
+      <div class="tier-field">
+        <label for="tierMin">Min</label>
+        <input type="number" id="tierMin" min="1" placeholder="e.g. 80" autocomplete="off">
+      </div>
+      <div class="tier-field">
+        <label for="tierMax">Max</label>
+        <input type="number" id="tierMax" min="1" placeholder="e.g. 100" autocomplete="off">
+      </div>
+      <div class="tier-field">
+        <label class="checkbox-label" for="tierUseBase">
+          <input type="checkbox" id="tierUseBase">
+          Use base stats
+        </label>
+      </div>
+      <button class="tier-btn" id="tierSearchBtn">Apply</button>
+      <button class="tier-btn secondary" id="tierClearBtn">Clear</button>
+    </div>
+
+    <div class="tier-status" id="tierStatus"></div>
+  </div>
+
+  <div class="scenario-panel">
+    <p class="help-text">choose which scenarios get generated into the table.</p>
+    <div class="scenario-grid">
+      <div class="scenario-group">
+        <span class="scenario-group-title">Weather / Abilities</span>
+        <label class="checkbox-label"><input type="checkbox" id="tblWeather" checked> Weather (2&times;)</label>
+      </div>
+      <div class="scenario-group">
+        <span class="scenario-group-title">Stat Modifiers</span>
+        <label class="checkbox-label"><input type="checkbox" id="tblStages" checked> Stat stages</label>
+        <label class="checkbox-label"><input type="checkbox" id="tblWind" checked> Wind (+25% to air type loomians)</label>
+      </div>
+      <div class="scenario-group">
+        <span class="scenario-group-title">Boots</span>
+        <label class="checkbox-label"><input type="checkbox" id="tblBoots" checked> Boots (+50%)</label>
+      </div>
+      <div class="scenario-group">
+        <span class="scenario-group-title">Personalities</span>
+        <label class="checkbox-label"><input type="checkbox" id="tblSluggish" checked> Sluggish</label>
+        <label class="checkbox-label"><input type="checkbox" id="tblVerySluggish" checked> Very Sluggish</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="gen-warning">
+   generating the full table will produce several thousand rows which will lag a crappy phone, but you wont have any issues on anything else. press the button below when you're ready.
+  </div>
+
+  <div class="gen-btn-row">
+    <button class="calc-btn" id="genTableBtn">Generate table</button>
+    <button class="tier-btn secondary" id="clearTableBtn">Clear table</button>
+  </div>
+  <div class="gen-status" id="genStatus"></div>
+
+  <div class="controls" id="tableControls" style="display:none;">
+    <input type="text" id="filter" placeholder="Filter by Loomian, personality, modifier…">
+    <span class="count" id="count"></span>
+    <label class="toggle"><input type="checkbox" id="asianMode"> i'm not asian</label>
+  </div>
+
+  <div class="table-wrap" id="tableWrap" style="display:none;">
+    <table class="speed" id="speedTable">
+      <thead>
+        <tr>
+          <th data-key="speed" data-type="num" class="sorted-desc">Speed<span class="arrow"></span></th>
+          <th data-key="name" data-type="str">Loomian<span class="arrow"></span></th>
+          <th data-key="base" data-type="num">Base Speed<span class="arrow"></span></th>
+          <th data-key="personality" data-type="str">Personality<span class="arrow"></span></th>
+          <th data-key="tp" data-type="num">TPs<span class="arrow"></span></th>
+          <th data-key="up" data-type="num">UPs<span class="arrow"></span></th>
+          <th data-key="modifier" data-type="str">Modifier<span class="arrow"></span></th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+const loomianData = `Embit|57|51|60|67|36|50|40
+Rabburn|61|67|75|95|46|68|60
+Searknight|89|88|102|125|71|85|65
+Dripple|63|51|56|50|55|45|41
+Reptide|78|67|71|70|70|65|51
+Luminami|105|88|94|95|98|85|60
+Fevine|45|51|71|44|50|36|64
+Felver|55|67|96|55|70|45|84
+Tahtab|75|88|126|75|92|65|104
+Eaglit|45|51|36|36|71|62|60
+Torprey|57|67|64|40|91|63|90
+Falkyrie|86|88|87|74|125|90|75
+Vambat|47|51|47|50|47|50|69
+Dimpire|60|67|65|75|60|60|85
+Vesperatu|76|88|110|97|90|65|99
+Snocub|55|51|45|38|67|60|45
+Snowki|65|67|75|65|75|65|60
+Himbrr|132|88|98|115|72|75|45
+Weevolt|51|51|36|36|67|55|65
+Stozap|71|67|56|41|88|60|89
+Zuelong|78|88|92|60|109|79|119
+Twilat|50|41|42|38|42|38|40
+Umbrat|75|84|106|90|61|88|71
+Luxoar|75|84|61|73|106|75|101
+Tiklipse|75|84|106|90|106|75|89
+Cathorn|35|37|40|24|55|24|47
+Propae|50|46|39|60|39|55|37
+Cynamoth|70|80|55|85|98|99|88
+Sumobito|72|80|110|106|51|101|55
+Twittle|44|40|50|38|22|33|58
+Paratweet|54|56|75|48|32|43|88
+Avitross|79|85|100|78|67|63|113
+Pyder|45|43|60|40|30|40|45
+Swolder|85|85|120|105|50|65|65
+Antsee|55|43|25|60|40|60|20
+Florant|105|88|55|105|82|105|35
+Florant_Flychomp|105|88|123|112|55|112|50
+Grubby|35|39|50|40|35|33|42
+Coonucopia|60|48|45|65|35|48|37
+Terrafly|75|85|112|87|61|60|95
+Terraclaw|94|87|121|116|60|54|43
+Kleptyke|55|48|50|40|20|30|95
+Ragoon|95|80|100|95|60|55|90
+Babore|62|46|60|60|30|30|38
+Boarrok|102|71|110|95|59|70|68
+Geklow|50|55|50|45|68|50|67
+Eleguana|80|80|55|85|90|115|80
+Slugling|70|41|10|10|50|70|45
+Escargrow|90|65|35|20|65|90|50
+Gastroak|120|88|60|40|92|120|55
+Gastroak_Terraform|140|88|60|45|107|140|65
+Kabunga|52|53|76|43|64|34|86
+Kabunga_Halloween|65|68|23|58|99|74|5
+Wiki-Wiki|162|125|49|70|62|70|47
+Chartiki|108|94|49|80|112|80|62
+Waka-Laka|104|73|49|86|124|108|41
+Shawchi|79|91|36|52|104|74|89
+Rakrawla|75|59|51|68|44|54|43
+Sedimars|107|87|91|108|52|81|54
+Gumpod|60|55|42|98|42|43|33
+Ventacean|90|90|57|142|90|58|48
+Phancub|46|60|65|50|46|55|60
+Phancub_Valentine|58|67|52|79|17|63|46
+Phancub_Sweets|58|67|52|79|17|63|46
+Ursoul|99|89|120|68|50|90|75
+Ursnac|99|89|95|113|50|90|55
+Whispup|45|60|57|42|70|48|72
+Revenine|65|89|105|63|115|67|97
+Skilava|50|70|48|49|58|49|55
+Geksplode|65|80|52|58|80|59|60
+Eruptidon|81|90|94|74|105|89|77
+Eruptidon_Magmadire|81|90|104|90|127|94|80
+Craytal|76|74|34|43|76|43|62
+Craytal_Holiday|76|74|76|43|14|63|62
+Krakaloa|95|125|58|95|91|99|22
+Krakaloa_Lavafiend|115|125|63|105|126|109|12
+Volkaloa|81|90|110|74|64|64|102
+Festifir|128|101|119|71|46|98|22
+Igneol|62|75|60|70|42|41|42
+Chrysite|82|80|64|99|47|46|42
+Obsidrugon|99|100|100|124|72|65|65
+Cafnote_Male|60|60|42|62|42|58|53
+Cafnote_Female|60|60|42|58|42|62|53
+Trumbull|92|79|134|102|52|68|73
+Mootune|92|79|52|79|134|102|62
+Gobbidemic|70|80|35|60|93|64|123
+Icigool|95|69|112|94|35|81|39
+Icigool_Incarnate|105|99|132|104|44|91|50
+Pyramind|88|60|45|69|84|99|35
+Pharoglyph|88|100|55|55|120|101|106
+Burroach|32|60|46|63|45|54|77
+Garbantis|55|76|97|115|54|74|104
+Whimpor|62|58|21|46|59|62|53
+Stratusoar|100|80|49|77|105|108|81
+Stratusoar_Jetwing|100|100|66|67|135|78|119
+Territi|51|58|61|44|59|48|52
+Dyeborg|78|86|97|83|93|87|68
+Operaptor|53|67|64|61|45|53|49
+Concredon|77|77|84|69|53|64|66
+Tyrecks|89|94|111|102|72|83|74
+Chompactor|58|55|61|73|32|51|45
+Munchweel|94|79|104|113|52|78|66
+Scorb|49|55|25|42|67|45|77
+Veylens|57|64|28|56|88|67|55
+Gardrone|74|82|54|73|132|119|61
+Poochrol|51|51|59|52|31|47|69
+Hunder|78|84|94|83|63|69|116
+Goppie|48|54|33|45|53|46|64
+Arapaigo|95|79|51|84|104|84|105
+Pyke|64|84|62|58|33|51|68
+Skelic|89|100|104|82|55|73|87
+Skelic_Seascourge|109|100|134|92|65|78|77
+Zaleo|73|68|63|55|55|54|52
+Joltooth|94|89|126|87|56|84|69
+Joltooth_Thunderking|94|89|136|87|66|84|109
+Dobo|58|74|47|44|71|68|58
+Infernix|84|95|57|58|110|117|89
+Kyogo|51|63|55|64|51|62|74
+Dorogo|66|86|86|72|90|69|116
+Wiledile|63|63|74|57|69|50|79
+Mawamurk|119|83|97|92|94|89|41
+Ampole|44|55|33|41|35|42|69
+Amphiton|59|72|59|61|60|64|81
+Meditoad|99|86|95|92|99|96|43
+Pwuff|75|54|46|71|47|69|49
+Bloatox|93|80|109|91|57|73|82
+Barblast|96|88|72|107|89|88|37
+Swimp|46|60|52|44|25|47|64
+Snapr|58|71|81|63|31|59|72
+Garlash|87|89|100|84|63|72|100
+Hydrini|40|52|41|48|56|56|45
+Bezeldew|60|65|54|78|80|88|52
+Deludrix|60|85|114|58|122|67|94
+Ceratot|59|69|56|64|26|42|44
+Trepodon|74|80|84|86|32|56|48
+Colossotrops|103|96|124|111|70|67|54
+Cupoink|52|67|65|56|34|64|55
+Hoganosh|84|88|109|90|57|109|41
+Hoganosh_Atomic|89|93|129|95|67|114|61
+Mochibi|51|60|28|53|65|44|79
+Totemochi|58|84|33|68|100|63|88
+Mocho|71|90|72|102|120|93|67
+Gwurm|47|55|27|53|42|41|30
+Odasho|55|60|32|73|59|58|42
+Spreezy|72|95|46|103|94|76|93
+Pipsee|44|52|30|55|43|49|55
+Dandylil|56|79|43|63|90|54|75
+Whippledriff|72|90|53|115|110|71|89
+Vari|49|60|52|43|52|43|57
+Cervolen|92|85|110|85|52|72|89
+Wendolen|50|80|119|60|98|75|103
+Kirolen|78|83|137|69|73|63|82
+Zepholen|70|92|57|90|123|66|87
+Venolen|83|90|61|67|101|122|61
+Wresolen|104|79|130|88|27|79|78
+Buzzolen|69|100|99|75|45|96|101
+Tundrolen|91|86|91|130|71|66|50
+Pyrolen|119|91|34|63|133|79|66
+Hydrolen|80|85|97|59|97|60|107
+Copling|34|70|55|61|25|51|99
+Copperage|66|80|78|90|35|62|74
+Oxidrake|87|90|123|113|63|76|63
+Spirivii|61|0|44|42|25|33|45
+Eidohusk|81|0|44|88|25|62|20
+Harvesect|116|0|100|119|57|77|56
+Snowl|15|71|9|20|12|24|59
+Stricicle|48|81|48|58|86|61|70
+Wintrix|81|92|63|86|114|85|94
+Snagull|68|60|42|53|81|58|78
+Snagulp|59|79|50|59|91|69|98
+Snagoop|50|89|68|77|121|94|108
+Makame|44|59|30|76|51|43|30
+Makoro|71|70|38|101|75|57|32
+Tsukame|91|80|67|120|116|77|34
+Cavenish|51|66|31|79|61|52|86
+Banfino|72|79|58|97|103|71|109
+Kanki|43|50|82|66|5|44|63
+Kanibo|68|97|125|103|39|73|80
+Sharpod|82|77|99|62|25|48|75
+Samarine|120|87|117|82|58|64|80
+Lumica|66|85|69|63|33|71|15
+Lumello|100|100|99|106|62|96|15
+Polypi|42|77|10|24|54|54|39
+Laphyra|75|88|15|44|72|85|71
+Jellusa|100|99|58|66|95|100|92
+Taoshi|70|57|49|64|18|64|50
+Taoshinu|110|90|93|94|48|89|62
+Kittone|45|65|44|37|57|39|85
+Lyricat|90|93|69|62|107|64|101
+Boonary|64|64|64|64|64|64|64
+Somata|65|70|8|44|57|93|22
+Clionae|97|91|44|66|95|127|70
+Cinnaboo|51|55|11|40|63|60|70
+Cinnogre|112|99|55|71|115|86|77
+Swirelle|65|100|65|65|65|65|100
+Swishy|39|53|15|51|52|77|72
+Fiscarna|79|88|43|87|113|110|79
+Bunpuff|46|70|22|41|56|51|71
+Bunnecki|77|94|73|72|102|80|102
+Dractus|52|70|87|51|49|49|63
+Frutress|67|80|87|76|49|57|36
+Seedrake|81|89|120|89|97|66|83
+Volpup|54|78|70|49|19|44|73
+Halvantic|123|95|130|71|51|60|85
+Impkin|54|50|47|29|71|27|72
+Grimmick|72|72|61|39|95|35|92
+Imperior|97|91|93|62|115|57|100
+Imperior_Archfiend|97|91|133|52|140|47|110
+Mistlebud|25|50|9|75|0|75|16
+Hollibunch|65|110|51|130|0|130|39
+Cryocub|49|57|41|65|37|46|51
+Barbadger|78|93|115|106|57|72|82
+Kyeggo|67|62|26|54|66|56|44
+Doreggo|86|78|42|66|102|70|56
+Dreggodyne|96|92|73|77|135|82|70
+Dreggodyne_Tempereign|96|92|93|77|145|82|95
+Wispur|25|61|9|47|72|70|33
+Lampurge|42|81|39|78|97|91|40
+Charonyx|56|101|68|96|122|106|51
+Smoal|37|67|38|30|38|25|54
+Charkiln|56|77|74|52|74|39|84
+Billoforge|80|87|117|104|117|71|24
+Sherbot|69|85|42|97|94|62|76
+Llamba|59|51|20|59|64|47|70
+Choochew|76|76|37|70|83|62|86
+Loomala|92|98|60|89|95|80|111
+Fentern|45|100|42|46|16|41|70
+Weaselin|75|150|72|71|56|66|90
+Singeel|75|43|6|24|31|16|5
+Moreel|105|83|86|104|121|81|35
+Crabushi|35|48|53|84|5|52|76
+Crabtana|60|90|100|117|39|79|100
+Teripod|79|90|49|74|15|52|61
+Teridescent|115|90|112|105|45|73|70
+Skampi|10|72|7|97|7|67|110
+Prawnsu|50|82|44|107|130|77|92
+Shrimposte|50|82|130|117|44|87|72
+Dokan|63|88|49|66|23|52|49
+Dokumori|88|101|101|96|60|70|59
+Mirrami|10|56|85|31|85|56|24
+Mirraith|50|84|125|72|125|105|44
+Thawmin|77|92|49|58|118|92|99
+Leshent|104|86|103|93|56|79|64
+Kayute|40|61|58|54|29|49|69
+Kayappa|52|78|79|75|39|70|81
+Kramboss|79|98|110|91|66|86|95
+Kramboss_Frostshackled|99|88|130|101|66|96|100
+Leopaw|56|78|54|48|28|39|71
+Chienta|98|97|95|73|73|57|115
+Eyebrella|64|62|69|60|34|48|47
+Parasoul|91|80|113|92|64|71|74
+Lissen|69|62|31|58|68|58|38
+Biwarned|113|80|44|97|98|97|56
+Lantot|41|62|62|42|69|45|63
+Lantorch|68|80|98|62|113|71|93
+Milgoo|62|62|27|33|66|65|69
+Rancidor|93|80|49|59|99|92|113
+Nautling|53|46|27|15|27|15|17
+Nautillect|106|82|59|74|105|115|34
+Naukout|106|82|105|115|59|74|34
+Yutiny|47|57|61|31|24|53|59
+Yuteen|61|69|80|42|37|72|73
+Yutyphoon|82|87|115|66|61|95|104
+Venile|47|57|61|53|24|31|59
+Verinox|61|69|80|72|37|42|73
+Verinosaur|82|87|115|95|61|66|104
+Nymvolt|43|60|29|30|40|59|70
+Ohmbolt|66|93|29|54|51|77|70
+Plasmoth|86|93|49|67|84|109|112
+Cicalute|43|64|29|65|29|53|40
+Violana|68|97|43|116|89|112|61
+Goswing|50|92|59|43|34|41|66
+Ganderveil|86|107|109|71|56|68|93
+Banooh|41|45|24|25|24|25|66
+Banokey|97|89|124|50|74|50|96
+Spirwix|40|61|29|50|100|50|45
+Malevowax|85|81|49|95|120|95|75
+Grievestone|48|43|30|85|85|30|30
+Obelost|84|73|50|135|135|50|60
+Jimby|40|58|28|27|81|100|90
+Piccolio|80|79|48|47|111|120|90
+Wassel|29|35|38|10|14|21|53
+Borealisk|98|70|118|57|68|101|103
+Snicle|30|30|53|49|34|29|47
+Slivyce|83|83|102|103|73|61|88
+Nukichi|54|75|89|45|53|37|96
+Dainuki|108|96|89|93|53|61|96
+Terracolt|57|71|73|68|46|42|68
+Broncotta|98|82|107|87|58|61|102
+Duskit|74|100|100|81|132|104|109
+Ikazune|72|115|119|62|149|89|94
+Protogon|58|118|82|99|121|101|121
+Dakuda|99|119|127|86|95|77|97
+Dakuda_Overcharged|119|119|95|96|157|87|77
+Cosmeleon|100|100|100|100|100|100|100
+Mutagon|107|123|114|139|78|68|71
+Cephalops|164|116|96|69|129|74|52
+Elephage|105|90|55|55|125|55|110
+Phagenaut|105|105|75|120|145|55|95
+Glacadia|96|115|88|69|119|102|111
+Arceros|96|115|119|112|88|79|91
+Novadeaus|96|115|134|90|134|80|101
+Morphezu|115|90|55|55|150|100|85
+Behemoroth|115|90|150|100|55|55|85
+Leviatross|115|90|100|55|85|55|150
+Cosmiore_Encased|99|145|68|135|84|98|46
+Cosmiore_Cracked|99|115|68|115|124|78|76
+Cosmiore_Unleashed|99|105|134|105|68|68|96
+Solnecta|111|81|96|80|129|92|86
+Nymaurae|76|115|66|77|119|122|100
+Nymesis|76|115|66|77|119|122|100
+Metronette|83|128|84|69|127|79|105
+Metronette_Willbound|83|98|134|69|147|79|115
+Nevermare|66|120|113|89|66|110|111
+Gargolem_Base|55|105|120|85|120|85|105
+Gargolem_Attack|55|105|165|40|165|40|105
+Gargolem_Defense|55|105|60|165|60|165|65
+Gargolem_Speed|55|105|90|85|90|85|165
+Odoyaga|93|95|103|109|131|73|71
+Wabalisc|106|103|99|88|112|98|69
+Akhalos|116|94|120|97|73|91|84
+Celesting|125|125|63|79|108|84|91
+Celesting_Stellarchime|150|111|82|19|128|114|121
+Mimask|95|113|117|65|107|65|113
+Grimyuline|101|78|107|110|84|97|98`;
+
+const noStrongPersonality = new Set([
+  "Cosmeleon","Dakuda","Dakuda_Overcharged","Duskit","Ikazune","Protogon",
+  "Mutagon","Arceros","Glacadia","Cephalops","Elephage","Phagenaut",
+  "Novadeaus","Cosmiore_Encased","Cosmiore_Cracked","Cosmiore_Unleashed",
+  "Solnecta","Nymaurae","Nymesis","Gargolem_Base","Gargolem_Attack",
+  "Gargolem_Defense","Gargolem_Speed","Nevermare","Wabalisc","Akhalos",
+  "Celesting","Celesting_Stellarchime","Mimask","Grimyuline",
+  "Morphezu","Leviatross","Behemoroth"
+]);
+
+const soulburstForms = new Set([
+  "Florant_Flychomp","Gastroak_Terraform","Kabunga_Halloween","Phancub_Valentine",
+  "Phancub_Sweets","Eruptidon_Magmadire","Craytal_Holiday","Krakaloa_Lavafiend",
+  "Stratusoar_Jetwing","Skelic_Seascourge","Joltooth_Thunderking","Hoganosh_Atomic",
+  "Imperior_Archfiend","Dreggodyne_Tempereign","Kramboss_Frostshackled",
+  "Dakuda_Overcharged","Cosmiore_Encased","Cosmiore_Cracked","Cosmiore_Unleashed",
+  "Metronette_Willbound","Gargolem_Base","Gargolem_Attack","Gargolem_Defense",
+  "Gargolem_Speed","Celesting_Stellarchime"
+]);
+
+const manualNoBootsOverride = new Set();
+const manualForceBootsOverride = new Set();
+
+const hastenLoomians = new Set([
+  "Cynamoth","Eaglit","Torprey","Falkyrie","Twilat","Umbrat","Luxoar","Tiklipse",
+  "Pyramind","Pharoglyph","Pipsee","Dandylil","Whippledriff","Kittone","Lyricat","Duskit",
+  "Embit","Rabburn","Searknight","Snicle","Slivyce","Akhalos"
+]);
+
+const drudgeLoomians = new Set([
+  "Terrafly","Obsidrugon","Pyke","Skelic","Crabushi","Crabtana","Teripod","Teridescent"
+]);
+
+const blazeRushLoomians = new Set([
+  "Kirolen","Terracolt","Broncotta","Arceros","Novadeaus",
+  "Skilava","Geksplode","Eruptidon","Craytal","Krakaloa","Volkaloa","Ikazune","Solnecta"
+]);
+
+const weatherDoubleRain = new Set(["Arapaigo","Skelic_Seascourge"]);
+const weatherDoubleSun = new Set(["Terraclaw","Terrafly","Infernix"]);
+const weatherDoubleThunder = new Set(["Tyrecks","Sherbot"]);
+const weatherDoubleFog = new Set(["Revenine","Ursoul"]);
+const sugarRushLoomians = new Set(["Mochibi","Totemochi","Mocho","Spreezy","Sherbot"]);
+const slowest = new Set(["Luminami","Ursnac","Billoforge"]);
+
+const acceleratePlus2 = new Set([
+  "Shrimposte","Gargolem_Base","Gargolem_Attack","Gargolem_Defense","Gargolem_Speed",
+  "Prawnsu","Revenine","Loomala","Gardrone"
+]);
+
+const revUpLoomians = new Set([
+  "Avitross","Twittle","Munchweel","Sharpod","Samarine"
+]);
+
+const defensivePriorityMinus2 = new Set(["Odasho","Propae"]);
+const armorDownPlus2 = new Set(["Searknight","Falkyrie"]);
+
+const airLoomians = new Set([
+  "Falkyrie","Eaglit","Torprey","Twittle","Paratweet","Avitross","Goswing",
+  "Ganderveil","Whimpor","Nymaurae","Nymesis","Stratusoar","Stratusoar_Jetwing"
+]);
+
+const formMap = {
+  "Florant_Flychomp": ["Florant","Flychomp"],
+  "Gastroak_Terraform": ["Gastroak","Terraform"],
+  "Kabunga_Halloween": ["Kabunga","Halloween"],
+  "Phancub_Valentine": ["Phancub","Valentine's"],
+  "Phancub_Sweets": ["Phancub","Sweets"],
+  "Eruptidon_Magmadire": ["Eruptidon","Magmadire"],
+  "Craytal_Holiday": ["Craytal","Holiday"],
+  "Krakaloa_Lavafiend": ["Krakaloa","Lavafiend"],
+  "Cafnote_Male": ["Cafnote","Male"],
+  "Cafnote_Female": ["Cafnote","Female"],
+  "Icigool_Incarnate": ["Icigool","Incarnate"],
+  "Stratusoar_Jetwing": ["Stratusoar","Jetwing"],
+  "Skelic_Seascourge": ["Skelic","Seascourge"],
+  "Joltooth_Thunderking": ["Joltooth","Thunderking"],
+  "Hoganosh_Atomic": ["Hoganosh","Atomic"],
+  "Imperior_Archfiend": ["Imperior","Archfiend"],
+  "Dreggodyne_Tempereign": ["Dreggodyne","Tempereign"],
+  "Kramboss_Frostshackled": ["Kramboss","Frostshackled"],
+  "Dakuda_Overcharged": ["Dakuda","Overcharged"],
+  "Cosmiore_Encased": ["Cosmiore","Encased"],
+  "Cosmiore_Cracked": ["Cosmiore","Cracked"],
+  "Cosmiore_Unleashed": ["Cosmiore","Unleashed"],
+  "Metronette_Willbound": ["Metronette","Willbound"],
+  "Gargolem_Base": ["Gargolem","Base"],
+  "Gargolem_Attack": ["Gargolem","Attack"],
+  "Gargolem_Defense": ["Gargolem","Defense"],
+  "Gargolem_Speed": ["Gargolem","Speed"],
+  "Celesting_Stellarchime": ["Celesting","Stellarchime"]
+};
+
+function getDisplay(key) {
+  if (formMap[key]) {
+    const [b, f] = formMap[key];
+    return `${b} (${f})`;
+  }
+  return key;
+}
+
+function parseData(str) {
+  return str.trim().split("\n").map(line => {
+    const p = line.split("|");
+    return { name: p[0], key: p[0], speed: parseInt(p[7], 10) };
+  }).filter(x => !isNaN(x.speed));
+}
+
+function calcSpeed(base, level, personality, tp, up) {
+  const inner = Math.floor((2 * base + tp / 4) * level / 100 + 5);
+  const stat = inner + Math.floor(up / 2);
+  return Math.floor(stat * personality);
+}
+
+function personalityClass(p) {
+  return "personality-" + p.replace(/\s+/g, "");
+}
+
+function modifierClass(m) {
+  if (m === "—") return "mod-None";
+  if (m.startsWith("Wind")) return "mod-Wind";
+  if (m.includes("Boots") || m.includes("Armor Down")) return "mod-Boots";
+  if (m.includes("Accelerate")) return "mod-Accel";
+  if (m.includes("Rev Up")) return "mod-RevUp";
+  if (m.includes("Defensive Priority")) return "mod-Priority";
+  if (m.startsWith("Rain")) return "mod-Rain";
+  if (m.startsWith("Sun")) return "mod-Sun";
+  if (m.startsWith("Thunderstorm")) return "mod-Thunder";
+  if (m.startsWith("Dense Fog")) return "mod-Fog";
+  if (m.startsWith("Sugar Rush")) return "mod-Sugar";
+  return "mod-None";
+}
+
+function getStageMult(stage) {
+  if (stage >= 0) return (2 + stage) / 2;
+  return 2 / (2 - stage);
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+function normalizeName(s) {
+  return String(s || "")
+    .toLowerCase()
+    .replace(/[\u2018\u2019\u0060\u00B4]/g, "'")
+    .replace(/[^a-z0-9()' ]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const parsedLoomians = parseData(loomianData);
+const loomianMap = new Map();
+for (const l of parsedLoomians) loomianMap.set(l.key.toLowerCase(), l);
+
+function resolveLoomianInput(value) {
+  const v = normalizeName(value);
+  if (!v) return null;
+  const keyGuess = v.replace(/\s+/g, "_");
+  if (loomianMap.has(keyGuess)) return loomianMap.get(keyGuess);
+  if (loomianMap.has(v)) return loomianMap.get(v);
+  for (const [key, l] of loomianMap) {
+    if (normalizeName(key) === v) return l;
+    if (normalizeName(getDisplay(key)) === v) return l;
+  }
+  return null;
+}
+
+const datalist = document.getElementById("loomianList");
+for (const l of parsedLoomians) {
+  const opt = document.createElement("option");
+  opt.value = getDisplay(l.key);
+  datalist.appendChild(opt);
+}
+
+const STAGE_SOURCES = [
+  { id: "hasten",     label: "Hasten",             canStack: true,  stages: [1, 2], set: hastenLoomians },
+  { id: "drudge",     label: "Drudge",             canStack: true,  stages: [1, 2], set: drudgeLoomians },
+  { id: "blazeRush",  label: "Blaze Rush",         canStack: true,  stages: [2],    set: blazeRushLoomians },
+  { id: "accelerate", label: "Accelerate",         canStack: true,  stages: [2],    set: acceleratePlus2 },
+  { id: "revUp",      label: "Rev Up",             canStack: true,  stages: [1, 2, 3], set: revUpLoomians },
+  { id: "armorDown",  label: "Armor Down",         canStack: false, stages: [2],    set: armorDownPlus2 },
+  { id: "defPriority",label: "Defensive Priority", canStack: false, stages: [-2],   set: defensivePriorityMinus2 },
+];
+
+function getActiveSources(key) {
+  return STAGE_SOURCES.filter(s => s.set.has(key));
+}
+
+function sourceStages(src) {
+  return src.canStack ? src.stages : [src.stages[src.stages.length - 1]];
+}
+
+function sourceStageLabel(src, stage) {
+  return `+${stage} (${src.label})`.replace("+-", "-");
+}
+
+function getSpeedStageOptions(key, hasBoots) {
+  const active = getActiveSources(key);
+  const out = [];
+  const seen = new Set();
+
+  const plus1Sources = active.filter(s => s.canStack && s.stages.includes(1));
+  const plus1Label = plus1Sources.length ? plus1Sources[0].label : null;
+
+  for (const src of active) {
+    for (const st of sourceStages(src)) {
+      const mult = getStageMult(st);
+      let label;
+      if (st === 1 && hasBoots && plus1Label) {
+        label = `Boots/+1 ${plus1Label}`;
+      } else {
+        label = sourceStageLabel(src, st);
+      }
+      const sig = `${st}|${label}`;
+      if (seen.has(sig)) continue;
+      seen.add(sig);
+      out.push({ stage: st, mult, label });
+    }
+  }
+
+  if (hasBoots) {
+    const hasPlus1Source = plus1Label !== null;
+    const soloLabel = hasPlus1Source ? `Boots/+1 ${plus1Label}` : "Boots (+50%)";
+    const soloSig = `1|${soloLabel}`;
+    if (!seen.has(soloSig)) {
+      out.push({ stage: 1, mult: 1.5, label: soloLabel, bootsOnly: true });
+    }
+
+    for (const src of active) {
+      for (const st of sourceStages(src)) {
+        if (st === 1) continue;
+        const combinedMult = getStageMult(st) * 1.5;
+        const label = `${sourceStageLabel(src, st)} + Boots (+50%)`;
+        const sig = `b${st}|${label}`;
+        if (seen.has(sig)) continue;
+        seen.add(sig);
+        out.push({ stage: st, mult: combinedMult, label });
+      }
+    }
+  }
+
+  return out;
+}
+
+function buildEntries(loomian, opts, level = 50) {
+  const { name, key, speed: base } = loomian;
+  const entries = [];
+
+  let personalities;
+  if (noStrongPersonality.has(key)) {
+    personalities = [[1.1, "Nimble"], [1.0, "Neutral"]];
+    if (opts.includeSluggish) personalities.push([0.9, "Sluggish"]);
+    if (opts.includeVerySluggish) personalities.push([0.9, "Sluggish"]);
+  } else {
+    personalities = [[1.2, "Very Nimble"], [1.1, "Nimble"], [1.0, "Neutral"]];
+    if (opts.includeSluggish) personalities.push([0.9, "Sluggish"]);
+    if (opts.includeVerySluggish) personalities.push([0.8, "Very Sluggish"]);
+  }
+  const seenP = new Set();
+  personalities = personalities.filter(([pv, pn]) => {
+    const sig = pv + "|" + pn;
+    if (seenP.has(sig)) return false;
+    seenP.add(sig);
+    return true;
+  });
+
+  const tpAmounts = slowest.has(key) ? [[0, "0"]] : [[200, "200"], [0, "0"]];
+  const upAmounts = slowest.has(key) ? [[0, "0"]] : [[40, "40"]];
+
+  const weatherMods = [];
+  if (opts.includeWeather) {
+    if (weatherDoubleRain.has(key)) weatherMods.push({ mult: 2.0, labels: ["Rain (2×)"] });
+    if (weatherDoubleSun.has(key)) weatherMods.push({ mult: 2.0, labels: ["Sun (2×)"] });
+    if (weatherDoubleThunder.has(key)) weatherMods.push({ mult: 2.0, labels: ["Thunderstorm (2×)"] });
+    if (weatherDoubleFog.has(key)) weatherMods.push({ mult: 2.0, labels: ["Dense Fog (2×)"] });
+    if (sugarRushLoomians.has(key)) weatherMods.push({ mult: 2.0, labels: ["Sugar Rush (2×)"] });
+  }
+
+  let hasBoots = !soulburstForms.has(key);
+  if (manualNoBootsOverride.has(key)) hasBoots = false;
+  if (manualForceBootsOverride.has(key)) hasBoots = true;
+
+  const stageOptions = (opts.includeStages)
+    ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots)]
+    : [{ mult: 1.0, label: null }];
+
+  const filteredStageOptions = stageOptions.filter(st => {
+    if (!opts.includeBoots) {
+      if (st.bootsOnly) return false;
+      if (st.label && st.label.toLowerCase().includes("boots")) return false;
+    }
+    return true;
+  });
+
+  const windOptions = (opts.includeWind && airLoomians.has(key))
+    ? [{ mult: 1.0, labels: [] }, { mult: 1.25, labels: ["Wind (+25%)"] }]
+    : [{ mult: 1.0, labels: [] }];
+
+  const bootMult = opts.includeBoots && hasBoots ? 1.5 : 1.0;
+
+  const scenarios = [];
+  const addScenario = (mult, labels) => {
+    const sig = mult + "|" + labels.join(" + ");
+    if (scenarios.some(s => s.sig === sig)) return;
+    scenarios.push({ mult, labels, sig });
+  };
+
+  for (const w of [{ mult: 1.0, labels: [] }, ...weatherMods]) {
+    for (const st of filteredStageOptions) {
+      for (const wi of windOptions) {
+        const parts = [];
+        if (w.labels.length) parts.push(w.labels.join(" + "));
+        if (wi.labels.length) parts.push(wi.labels.join(" + "));
+        if (st.label) parts.push(st.label);
+        addScenario(w.mult * st.mult * wi.mult, parts);
+      }
+    }
+  }
+
+  if (opts.includeBoots && hasBoots && bootMult !== 1.0) {
+    const anyBootLabel = scenarios.some(s => s.labels.some(l => l.toLowerCase().includes("boots")));
+    if (!anyBootLabel) {
+      for (const w of [{ mult: 1.0, labels: [] }, ...weatherMods]) {
+        for (const wi of windOptions) {
+          const parts = [];
+          if (w.labels.length) parts.push(w.labels.join(" + "));
+          if (wi.labels.length) parts.push(wi.labels.join(" + "));
+          parts.push("Boots (+50%)");
+          addScenario(w.mult * bootMult * wi.mult, parts);
+        }
+      }
+    }
+  }
+
+  for (const [pv, pn] of personalities) {
+    for (const [tp, tpn] of tpAmounts) {
+      for (const [up, upn] of upAmounts) {
+        const s = calcSpeed(base, level, pv, tp, up);
+        for (const sc of scenarios) {
+          entries.push({
+            speed: Math.floor(s * sc.mult),
+            name, key, base,
+            personality: pn, tp: tpn, up: upn,
+            modifier: sc.labels.length ? sc.labels.join(" — ") : "—"
+          });
+        }
+      }
+    }
+  }
+
+  return entries;
+}
+
+function getTableOptions() {
+  return {
+    includeWeather: document.getElementById("tblWeather").checked,
+    includeStages: document.getElementById("tblStages").checked,
+    includeWind: document.getElementById("tblWind").checked,
+    includeBoots: document.getElementById("tblBoots").checked,
+    includeSluggish: document.getElementById("tblSluggish").checked,
+    includeVerySluggish: document.getElementById("tblVerySluggish").checked,
+  };
+}
+
+let unique = [];
+let tableReady = false;
+
+const tbody = document.getElementById("tbody");
+const countEl = document.getElementById("count");
+const filterEl = document.getElementById("filter");
+const asianModeEl = document.getElementById("asianMode");
+const tableWrap = document.getElementById("tableWrap");
+const tableControls = document.getElementById("tableControls");
+const genStatus = document.getElementById("genStatus");
+
+let sortKey = "speed";
+let sortType = "num";
+let sortDir = "desc";
+
+let tierFilter = null;
+
+const tierRangeToggle = document.getElementById("tierRangeToggle");
+const tierPanel = document.getElementById("tierPanel");
+const tierMinEl = document.getElementById("tierMin");
+const tierMaxEl = document.getElementById("tierMax");
+const tierUseBase = document.getElementById("tierUseBase");
+const tierSearchBtn = document.getElementById("tierSearchBtn");
+const tierClearBtn = document.getElementById("tierClearBtn");
+const tierStatusEl = document.getElementById("tierStatus");
+
+function generateTable() {
+  const opts = getTableOptions();
+  genStatus.textContent = "Generating…";
+
+  setTimeout(() => {
+    const allEntries = [];
+    for (const l of parsedLoomians) allEntries.push(...buildEntries(l, opts));
+
+    const seen = new Set();
+    const out = [];
+    for (const e of allEntries) {
+      const sig = [e.speed, e.key, e.personality, e.tp, e.up, e.modifier].join("\u0001");
+      if (seen.has(sig)) continue;
+      seen.add(sig);
+      out.push(e);
+    }
+
+    unique = out;
+    tableReady = true;
+    tableWrap.style.display = "";
+    tableControls.style.display = "";
+    genStatus.textContent = `Generated ${unique.length.toLocaleString()} entries.`;
+    render();
+  }, 20);
+}
+
+function clearTable() {
+  unique = [];
+  tableReady = false;
+  tableWrap.style.display = "none";
+  tableControls.style.display = "none";
+  tbody.innerHTML = "";
+  countEl.textContent = "";
+  genStatus.textContent = "Table cleared. Press \"Generate table\" to rebuild.";
+}
+
+document.getElementById("genTableBtn").addEventListener("click", generateTable);
+document.getElementById("clearTableBtn").addEventListener("click", clearTable);
+
+tierRangeToggle.addEventListener("change", () => {
+  tierPanel.classList.toggle("open", tierRangeToggle.checked);
+  if (!tierRangeToggle.checked) {
+    clearTierFilter();
+  }
+});
+
+function parseTierInput() {
+  const tMin = tierMinEl.value.trim();
+  const tMax = tierMaxEl.value.trim();
+
+  if (tMin === "" && tMax === "") return null;
+
+  const toNum = (v) => {
+    const n = parseInt(v, 10);
+    return isNaN(n) ? null : n;
+  };
+
+  let lo = toNum(tMin);
+  let hi = toNum(tMax);
+  if (lo === null && hi === null) return null;
+  if (lo === null) lo = hi;
+  if (hi === null) hi = lo;
+  if (lo > hi) [lo, hi] = [hi, lo];
+
+  return { min: lo, max: hi, mode: tierUseBase.checked ? "base" : "speed" };
+}
+
+function renderTierStatus() {
+  if (!tierFilter) {
+    tierStatusEl.innerHTML = "";
+    return;
+  }
+  const label = tierFilter.mode === "base" ? "base speed" : "speed tier";
+  let chip;
+  if (tierFilter.min === tierFilter.max) {
+    chip = `<span class="tier-chip${tierFilter.mode === "base" ? " base" : ""}">${tierFilter.min}</span>`;
+  } else {
+    chip = `<span class="tier-chip${tierFilter.mode === "base" ? " base" : ""}">${tierFilter.min} – ${tierFilter.max}</span>`;
+  }
+  const clearChip = `<span class="tier-chip clear" id="tierStatusClear">&#x2715; clear</span>`;
+  tierStatusEl.innerHTML = `Filtering by <strong>${label}</strong>: ${chip} ${clearChip}`;
+  document.getElementById("tierStatusClear").addEventListener("click", clearTierFilter);
+}
+
+function clearTierFilter() {
+  tierFilter = null;
+  tierMinEl.value = "";
+  tierMaxEl.value = "";
+  tierUseBase.checked = false;
+  renderTierStatus();
+  render();
+}
+
+function applyTierFilter() {
+  tierFilter = parseTierInput();
+  renderTierStatus();
+  render();
+}
+
+tierSearchBtn.addEventListener("click", applyTierFilter);
+tierClearBtn.addEventListener("click", clearTierFilter);
+
+[tierMinEl, tierMaxEl].forEach(el => {
+  el.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); applyTierFilter(); }
+  });
+});
+
+tierUseBase.addEventListener("change", () => {
+  if (tierFilter) applyTierFilter();
+});
+
+
+function render() {
+  if (!tableReady) {
+    tbody.innerHTML = "";
+    countEl.textContent = "";
+    return;
+  }
+
+  const filter = filterEl.value.trim().toLowerCase();
+  let rows = unique.filter(e => {
+    if (filter) {
+      const hay = (e.name + " " + e.personality + " " + e.modifier + " " + e.base + " " + e.tp + " " + e.up)
+        .toLowerCase();
+      if (!hay.includes(filter)) return false;
+    }
+    if (tierFilter) {
+      const val = tierFilter.mode === "speed" ? e.speed : e.base;
+      if (val < tierFilter.min || val > tierFilter.max) return false;
+    }
+    return true;
+  });
+
+  rows.sort((a, b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (sortType === "num") {
+      av = Number(av); bv = Number(bv);
+    } else {
+      av = String(av).toLowerCase();
+      bv = String(bv).toLowerCase();
+    }
+    if (av < bv) return sortDir === "asc" ? -1 : 1;
+    if (av > bv) return sortDir === "asc" ? 1 : -1;
+    const an = a.name.toLowerCase(), bn = b.name.toLowerCase();
+    if (an < bn) return -1;
+    if (an > bn) return 1;
+    return a.modifier.localeCompare(b.modifier);
+  });
+
+  const parts = [];
+  let prevSpeed = null;
+  for (const e of rows) {
+    const tierStart = (e.speed !== prevSpeed) ? " tier-start" : "";
+    prevSpeed = e.speed;
+    parts.push(
+      `<tr class="row${tierStart}">` +
+        `<td class="speed">${e.speed}</td>` +
+        `<td class="name">${esc(getDisplay(e.key))}</td>` +
+        `<td class="num">${e.base}</td>` +
+        `<td class="${personalityClass(e.personality)}">${esc(e.personality)}</td>` +
+        `<td class="num">${esc(e.tp)}</td>` +
+        `<td class="num">${esc(e.up)}</td>` +
+        `<td class="${modifierClass(e.modifier)}">${esc(e.modifier)}</td>` +
+      `</tr>`
+    );
+  }
+  tbody.innerHTML = parts.join("");
+  countEl.textContent = `${rows.length.toLocaleString()} of ${unique.length.toLocaleString()} entries`;
+}
+
+document.querySelectorAll("#speedTable thead th").forEach(th => {
+  th.addEventListener("click", () => {
+    const key = th.dataset.key;
+    if (sortKey === key) {
+      sortDir = sortDir === "asc" ? "desc" : "asc";
+    } else {
+      sortKey = key;
+      sortType = th.dataset.type;
+      sortDir = (sortType === "num") ? "desc" : "asc";
+    }
+    document.querySelectorAll("#speedTable thead th").forEach(h => {
+      h.classList.remove("sorted-asc", "sorted-desc");
+    });
+    th.classList.add(sortDir === "asc" ? "sorted-asc" : "sorted-desc");
+    render();
+  });
+});
+
+filterEl.addEventListener("input", render);
+asianModeEl.addEventListener("change", () => {
+  document.body.classList.toggle("asian-mode", asianModeEl.checked);
+});
+
+
+const calcName = document.getElementById("calcName");
+const calcBase = document.getElementById("calcBase");
+const calcPersonality = document.getElementById("calcPersonality");
+const calcUps = document.getElementById("calcUps");
+const calcBoots = document.getElementById("calcBoots");
+const calcWind = document.getElementById("calcWind");
+const calcStage = document.getElementById("calcStage");
+const calcWeather = document.getElementById("calcWeather");
+const calcTargetMode = document.getElementById("calcTargetMode");
+const calcTargetSpeed = document.getElementById("calcTargetSpeed");
+const calcTargetName = document.getElementById("calcTargetName");
+const calcTargetTp = document.getElementById("calcTargetTp");
+const calcTargetPersonality = document.getElementById("calcTargetPersonality");
+const calcTargetBoots = document.getElementById("calcTargetBoots");
+const calcTargetUps = document.getElementById("calcTargetUps");
+const calcTargetStage = document.getElementById("calcTargetStage");
+const calcTargetDoubling = document.getElementById("calcTargetDoubling");
+const calcRun = document.getElementById("calcRun");
+const calcResult = document.getElementById("calcResult");
+const targetValueWrap = document.getElementById("targetValueWrap");
+const targetLoomianWrap = document.getElementById("targetLoomianWrap");
+const targetTpWrap = document.getElementById("targetTpWrap");
+const targetPersonalityWrap = document.getElementById("targetPersonalityWrap");
+const targetBootsWrap = document.getElementById("targetBootsWrap");
+const targetUpsWrap = document.getElementById("targetUpsWrap");
+const targetStageWrap = document.getElementById("targetStageWrap");
+const targetDoublingWrap = document.getElementById("targetDoublingWrap");
+
+function clampUps(v) {
+  let n = parseInt(v, 10);
+  if (isNaN(n)) n = 40;
+  if (n < 0) n = 0;
+  if (n > 40) n = 40;
+  return n;
+}
+
+function updateTargetMode() {
+  const mode = calcTargetMode.value;
+  const isNone = mode === "none";
+  const isValue = mode === "value";
+  const isLoomian = mode === "loomian";
+
+  targetValueWrap.style.display = isValue ? "" : "none";
+  targetLoomianWrap.style.display = isLoomian ? "" : "none";
+  targetTpWrap.style.display = isLoomian ? "" : "none";
+  targetPersonalityWrap.style.display = isLoomian ? "" : "none";
+  targetBootsWrap.style.display = isLoomian ? "" : "none";
+  targetUpsWrap.style.display = isLoomian ? "" : "none";
+  targetStageWrap.style.display = isLoomian ? "" : "none";
+  targetDoublingWrap.style.display = isLoomian ? "" : "none";
+}
+
+calcTargetMode.addEventListener("change", () => {
+  updateTargetMode();
+  if (calcTargetMode.value === "loomian") calcTargetName.focus();
+  else if (calcTargetMode.value === "value") calcTargetSpeed.focus();
+});
+updateTargetMode();
+
+calcName.addEventListener("input", () => {
+  const l = resolveLoomianInput(calcName.value);
+  if (l) calcBase.value = l.speed;
+});
+
+function computeTargetSpeed() {
+  const mode = calcTargetMode.value;
+  if (mode === "none") return { speed: null };
+  if (mode === "value") {
+    const raw = calcTargetSpeed.value.trim();
+    if (raw === "") return { error: "Please enter a target Speed value." };
+    const v = parseInt(raw, 10);
+    if (isNaN(v) || v <= 0) return { error: "Target Speed must be a positive number." };
+    return { speed: v };
+  }
+  const l = resolveLoomianInput(calcTargetName.value);
+  if (!l) {
+    const typed = calcTargetName.value.trim();
+    return {
+      error: typed
+        ? `Couldn't find a Loomian named "${esc(typed)}". Pick one from the list.`
+        : "Please enter a target Loomian name."
+    };
+  }
+  const tp = Math.max(0, Math.min(200, parseInt(calcTargetTp.value, 10) || 0));
+  const up = clampUps(calcTargetUps.value);
+  const pv = parseFloat(calcTargetPersonality.value) || 1.0;
+  let spd = calcSpeed(l.speed, 50, pv, tp, up);
+  const stage = parseInt(calcTargetStage.value, 10) || 0;
+  const stageMult = getStageMult(stage);
+  const doubling = calcTargetDoubling.checked ? 2.0 : 1.0;
+  if (calcTargetBoots.value === "1") spd = Math.floor(spd * 1.5);
+  spd = Math.floor(spd * stageMult * doubling);
+  return { speed: spd };
+}
+
+calcRun.addEventListener("click", () => {
+  calcResult.style.display = "block";
+  calcResult.className = "calc-result";
+
+  let base = parseInt(calcBase.value, 10);
+  const nameL = resolveLoomianInput(calcName.value);
+  if (nameL && (isNaN(base) || base <= 0)) base = nameL.speed;
+
+  if (isNaN(base) || base <= 0) {
+    calcResult.className = "calc-result error";
+    calcResult.innerHTML = "Please enter a valid base Speed (or pick a Loomian).";
+    return;
+  }
+
+  const pv = parseFloat(calcPersonality.value) || 1.0;
+  const up = clampUps(calcUps.value);
+  const hasBoots = calcBoots.checked;
+  const hasWind = calcWind.checked;
+  const stage = parseInt(calcStage.value, 10) || 0;
+  const doublingOn = calcWeather.checked;
+
+  const targetResult = computeTargetSpeed();
+  if (targetResult.error) {
+    calcResult.className = "calc-result error";
+    calcResult.innerHTML = targetResult.error;
+    return;
+  }
+  const targetSpeed = targetResult.speed;
+
+  const isAir = nameL && airLoomians.has(nameL.key);
+  const windActive = hasWind && isAir;
+  const windMult = windActive ? 1.25 : 1.0;
+  const stageMult = getStageMult(stage);
+  const doublingMult = doublingOn ? 2.0 : 1.0;
+
+  const baseMultiplier = windMult * doublingMult * stageMult * (hasBoots ? 1.5 : 1.0);
+
+  function rawSpeed(tp) {
+    const inner = Math.floor((2 * base + tp / 4) * 50 / 100 + 5);
+    const stat = inner + Math.floor(up / 2);
+    return Math.floor(stat * pv);
+  }
+
+  function finalSpeed(tp) {
+    return Math.floor(rawSpeed(tp) * baseMultiplier);
+  }
+
+  const maxSpeed = finalSpeed(200);
+
+  if (targetSpeed === null) {
+    calcResult.className = "calc-result";
+    calcResult.innerHTML =
+      `<strong>${esc(calcName.value || getDisplay(nameL ? nameL.key : "Loomian"))}</strong> reaches ` +
+      `<span class="big">${maxSpeed}</span> Speed with 200 TPs.`;
+    return;
+  }
+
+  const needed = targetSpeed + 1;
+  const maxTp = 200;
+  let minTp = -1;
+  for (let tp = 0; tp <= maxTp; tp++) {
+    if (finalSpeed(tp) >= needed) {
+      minTp = tp;
+      break;
+    }
+  }
+
+  if (minTp === -1) {
+    let tieTp = -1;
+    for (let tp = maxTp; tp >= 0; tp--) {
+      if (finalSpeed(tp) === targetSpeed) { tieTp = tp; break; }
+    }
+
+    if (tieTp >= 0) {
+      const extra = [];
+      if (windActive) extra.push("Wind +25%");
+      else if (hasWind && !isAir) extra.push("Wind has no effect (not Air type)");
+      if (doublingOn) extra.push("Doubling ability ×2");
+      if (stage !== 0) extra.push(`Stage ${stage > 0 ? "+" : ""}${stage}`);
+      if (hasBoots) extra.push("Boots +50%");
+      calcResult.className = "calc-result tie";
+      calcResult.innerHTML =
+        `<strong>${esc(calcName.value || getDisplay(nameL ? nameL.key : "Loomian"))}</strong> can only <strong>speed tie</strong> <span class="big">${targetSpeed}</span>` +
+        ` with ${tieTp} TPs (coin flip to go first).<br>Max speed reached: ${maxSpeed}` +
+        (extra.length ? `<span class="sub">${extra.map(x => `<span class="bullet">• ${x}</span>`).join("")}</span>` : "");
+      return;
+    }
+
+    const reasons = [];
+    if (pv < (nameL && noStrongPersonality.has(nameL.key) ? 1.1 : 1.2)) {
+      const testPv = nameL && noStrongPersonality.has(nameL.key) ? 1.1 : 1.2;
+      const inner = Math.floor((2 * base + maxTp / 4) * 50 / 100 + 5);
+      const stat = inner + Math.floor(up / 2);
+      const testSpeed = Math.floor(Math.floor(stat * testPv) * baseMultiplier);
+      if (testSpeed >= needed) reasons.push(`${testPv === 1.2 ? "Very Nimble (+20%)" : "Nimble (+10%)"} would work`);
+      else reasons.push(`even ${testPv === 1.2 ? "Very Nimble (+20%)" : "Nimble (+10%)"} only reaches ${testSpeed}`);
+    }
+    if (!hasBoots) {
+      const inner = Math.floor((2 * base + maxTp / 4) * 50 / 100 + 5);
+      const stat = inner + Math.floor(up / 2);
+      const testSpeed = Math.floor(Math.floor(stat * pv) * baseMultiplier * 1.5);
+      if (testSpeed >= needed) reasons.push("Boots would work");
+      else reasons.push(`even Boots only reaches ${testSpeed}`);
+    }
+    if (hasWind && !isAir) reasons.push("not Air type for Wind");
+
+    calcResult.className = "calc-result impossible";
+    calcResult.innerHTML = `Cannot beat <strong>${targetSpeed}</strong> — max achievable is ${maxSpeed}.` +
+      `<span class="sub">${reasons.map(r => `<span class="bullet">• ${r}</span>`).join("")}</span>`;
+    return;
+  }
+
+  let html = `<strong>${esc(calcName.value || getDisplay(nameL ? nameL.key : "Loomian"))}</strong> needs <span class="big">${minTp} TPs</span> to outspeed ${targetSpeed}.<br>Max speed reached: ${maxSpeed}`;
+
+  const notes = [];
+  const maxPersonality = nameL && noStrongPersonality.has(nameL.key) ? 1.1 : 1.2;
+  if (pv < maxPersonality) {
+    const testPv = maxPersonality;
+    let lo = 0, hi = 200, found = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      const inner = Math.floor((2 * base + mid / 4) * 50 / 100 + 5);
+      const stat = inner + Math.floor(up / 2);
+      const testSpeed = Math.floor(Math.floor(stat * testPv) * baseMultiplier);
+      if (testSpeed >= needed) { found = mid; hi = mid - 1; }
+      else lo = mid + 1;
+    }
+    if (found >= 0 && found < minTp) {
+      notes.push(`${maxPersonality === 1.2 ? "Very Nimble (+20%)" : "Nimble (+10%)"} would drop this to ${found} TPs`);
+    }
+  }
+  if (!hasBoots) {
+    let lo = 0, hi = 200, found = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      const inner = Math.floor((2 * base + mid / 4) * 50 / 100 + 5);
+      const stat = inner + Math.floor(up / 2);
+      const testSpeed = Math.floor(Math.floor(stat * pv) * baseMultiplier * 1.5);
+      if (testSpeed >= needed) { found = mid; hi = mid - 1; }
+      else lo = mid + 1;
+    }
+    if (found >= 0 && found < minTp) {
+      notes.push(`Boots would drop this to ${found} TPs`);
+    }
+  }
+  if (windActive) notes.push("Wind +25% active");
+  else if (hasWind && !isAir) notes.push("Wind has no effect (not Air type)");
+  if (doublingOn) notes.push("Doubling ability ×2 active");
+  if (stage !== 0) notes.push(`Stage ${stage > 0 ? "+" : ""}${stage} (×${stageMult})`);
+  if (hasBoots) notes.push("Boots +50% active");
+
+  if (notes.length) {
+    html += `<span class="sub">` + notes.map(n => `<span class="bullet">• ${n}</span>`).join("") + `</span>`;
+  }
+
+  calcResult.innerHTML = html;
+});
+
+clearTable();
+</script>
+</body>
+</html>
