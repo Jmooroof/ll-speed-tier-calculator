@@ -242,8 +242,8 @@
     font-size: 1.35em;
     font-weight: 700;
     color: #0645ad;
-    display: block;
-    margin: 4px 0;
+    display: inline;
+    margin: 0 2px;
   }
   .calc-result.impossible .big { color: #b35900; }
   .calc-result.tie .big { color: #7a3e9e; }
@@ -553,12 +553,12 @@
       <div class="calc-field" style="grid-column: span 2;">
         <label for="calcTargetMode">Target</label>
         <select id="calcTargetMode">
-          <option value="none">No Target (just show speed)</option>
-          <option value="value" selected>Target Speed Value</option>
+          <option value="none" selected>No Target (just show speed)</option>
+          <option value="value">Target Speed Value</option>
           <option value="loomian">Target Loomian</option>
         </select>
       </div>
-      <div class="calc-field" id="targetValueWrap">
+      <div class="calc-field" id="targetValueWrap" style="display:none;">
         <label for="calcTargetSpeed">Target Speed</label>
         <input type="number" id="calcTargetSpeed" min="1" placeholder="e.g. 178">
       </div>
@@ -1513,7 +1513,7 @@ function renderTierStatus() {
     chip = `<span class="tier-chip${tierFilter.mode === "base" ? " base" : ""}">${tierFilter.min} – ${tierFilter.max}</span>`;
   }
   const clearChip = `<span class="tier-chip clear" id="tierStatusClear">&#x2715; clear</span>`;
-  tierStatusEl.innerHTML = `Filtering by <strong>${label}</strong>: ${chip} ${clearChip}`;
+  tierStatusEl.innerHTML = `Filtering by <strong>${label}</strong>: ${chip} ${clearChip}. I thought these chips would look better but it's useless.`;
   document.getElementById("tierStatusClear").addEventListener("click", clearTierFilter);
 }
 
@@ -1805,8 +1805,7 @@ calcRun.addEventListener("click", () => {
       if (hasBoots) extra.push("Boots +50%");
       calcResult.className = "calc-result tie";
       calcResult.innerHTML =
-        `<strong>${esc(calcName.value || getDisplay(nameL ? nameL.key : "Loomian"))}</strong> can only <strong>speed tie</strong> <span class="big">${targetSpeed}</span>` +
-        ` with ${tieTp} TPs (coin flip to go first).<br>Max speed reached: ${maxSpeed}` +
+        `We are tied at <span class="big">${targetSpeed}</span> — with ${tieTp} TPs it's a coin flip to see which moves first.<br>Max speed reached: ${maxSpeed}` +
         (extra.length ? `<span class="sub">${extra.map(x => `<span class="bullet">• ${x}</span>`).join("")}</span>` : "");
       return;
     }
