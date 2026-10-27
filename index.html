@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>List of Loomians by Speed tiers</title>
+<title>List of Loomians by Spleen tiers</title>
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -684,12 +684,15 @@
       <div class="scenario-group">
         <span class="scenario-group-title">Boots</span>
         <label class="checkbox-label"><input type="checkbox" id="tblBoots" checked> Boots (+50%)</label>
-        <label class="checkbox-label"><input type="checkbox" id="tblBootsExclusive"> Boots mutually exclusive with stat boosting moves</label>
       </div>
       <div class="scenario-group">
         <span class="scenario-group-title">Personalities</span>
         <label class="checkbox-label"><input type="checkbox" id="tblSluggish" checked> Sluggish</label>
         <label class="checkbox-label"><input type="checkbox" id="tblVerySluggish" checked> Very Sluggish</label>
+      </div>
+      <div class="scenario-group">
+        <span class="scenario-group-title">Evolution</span>
+        <label class="checkbox-label"><input type="checkbox" id="hideUnevolved"> Hide unevolved / base forms</label>
       </div>
     </div>
   </div>
@@ -1112,11 +1115,32 @@ const defensivePriorityMinus2 = new Set(["Odasho","Propae"]);
 const armorDownPlus2 = new Set(["Searknight","Falkyrie"]);
 
 const airLoomians = new Set([
-  "Twittle","Paratweet","Avitross","Zepholen","Snagull","Swirelle","Morphezu",
-  "Cynamoth","Whimpor","Stratusoar","Stratusoar_Jetwing","Pipsee","Dandylil","Whippledriff",
-  "Stricicle","Wintrix","Snagulp","Snagoop","Doreggo","Dreggodyne","Dreggodyne_Tempereign",
-  "Yutiny","Yuteen","Yutyphoon","Goswing","Ganderveil","Nymaurae","Nymesis","Gargolem",
-  "Odoyaga"
+  "Falkyrie","Eaglit","Torprey","Twittle","Paratweet","Avitross","Goswing",
+  "Ganderveil","Whimpor","Nymaurae","Nymesis","Stratusoar","Stratusoar_Jetwing"
+]);
+
+/* ── Unevolved / base forms to hide ──────────────────────────────────────── */
+const unevolvedLoomians = new Set([
+  // from provided file
+  "Embit","Rabburn","Dripple","Reptide","Fevine","Felver","Eaglit","Torprey",
+  "Vambat","Dimpire","Snocub","Snowki","Weevolt","Stozap","Twilat","Cathorn",
+  "Propae","Twittle","Paratweet","Pyder","Antsee","Grubby","Coonucopia",
+  "Kleptyke","Babore","Slugling","Escargrow","Rakrawla","Gumpod","Phancub",
+  "Whispup","Skilava","Geksplode","Igneol","Chrysite","Cafnote_Male",
+  "Cafnote_Female","Burroach","Territi","Operaptor","Concredon","Chompactor",
+  "Poochrol","Pyke","Zaleo","Dobo","Kyogo","Wiledile","Ampole","Pwuff","Swimp",
+  "Snapr","Hydrini","Bezeldew","Ceratot","Trepodon","Mochibi","Totemochi",
+  "Gwurm","Odasho","Pipsee","Dandylil","Vari","Copling","Spirivii","Eidohusk",
+  "Snowl","Stricicle","Snagull","Snagulp","Makame","Makoro","Cavenish","Kanki",
+  "Sharpod","Lumica","Polypi","Laphyra","Taoshi","Kittone","Somata","Cinnaboo",
+  "Bunpuff","Dractus","Frutress","Volpup","Impkin","Grimmick","Kyeggo","Wispur",
+  "Lampurge","Smoal","Charkiln","Llamba","Choochew","Singeel","Crabushi",
+  "Teripod","Skampi","Dokan","Mirrami","Kayute","Kayappa","Eyebrella","Lissen",
+  "Lantot","Milgoo","Nautling","Yutiny","Yuteen","Venile","Verinox","Nymvolt",
+  "Ohmbolt","Cicalute","Goswing","Banooh","Spirwix","Jimby","Nukichi","Terracolt",
+  // explicit additions requested
+  "Eidohusk","Copperage","Kabunga","Kabunga_Halloween","Veylens","Leopaw",
+  "Snicle","Fentern","Cupoink"
 ]);
 
 const formMap = {
@@ -1259,7 +1283,7 @@ function sourceStageLabel(src, stage) {
   return `+${stage} (${src.label})`.replace("+-", "-");
 }
 
-function getSpeedStageOptions(key, hasBoots, bootsExclusive) {
+function getSpeedStageOptions(key, hasBoots) {
   const active = getActiveSources(key);
   const out = [];
   const seen = new Set();
@@ -1292,9 +1316,6 @@ function getSpeedStageOptions(key, hasBoots, bootsExclusive) {
     }
 
     for (const src of active) {
-      const isRevUp = src.id === "revUp";
-      if (bootsExclusive && !isRevUp) continue;
-
       for (const st of sourceStages(src)) {
         if (st === 1) continue;
         const combinedMult = getStageMult(st) * 1.5;
@@ -1349,7 +1370,7 @@ function buildEntries(loomian, opts, level = 50) {
   if (manualForceBootsOverride.has(key)) hasBoots = true;
 
   const stageOptions = (opts.includeStages)
-    ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots, opts.bootsExclusive)]
+    ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots)]
     : [{ mult: 1.0, label: null }];
 
   const windOptions = (opts.includeWind && airLoomians.has(key))
@@ -1417,9 +1438,9 @@ function getTableOptions() {
     includeStages: document.getElementById("tblStages").checked,
     includeWind: document.getElementById("tblWind").checked,
     includeBoots: document.getElementById("tblBoots").checked,
-    bootsExclusive: document.getElementById("tblBootsExclusive").checked,
     includeSluggish: document.getElementById("tblSluggish").checked,
     includeVerySluggish: document.getElementById("tblVerySluggish").checked,
+    hideUnevolved: document.getElementById("hideUnevolved").checked,
   };
 }
 
@@ -1455,7 +1476,10 @@ function generateTable() {
 
   setTimeout(() => {
     const allEntries = [];
-    for (const l of parsedLoomians) allEntries.push(...buildEntries(l, opts));
+    for (const l of parsedLoomians) {
+      if (opts.hideUnevolved && unevolvedLoomians.has(l.key)) continue;
+      allEntries.push(...buildEntries(l, opts));
+    }
 
     const seen = new Set();
     const out = [];
@@ -1470,7 +1494,8 @@ function generateTable() {
     tableReady = true;
     tableWrap.style.display = "";
     tableControls.style.display = "";
-    genStatus.textContent = `Generated ${unique.length.toLocaleString()} entries.`;
+    const suffix = opts.hideUnevolved ? " (unevolved hidden)" : "";
+    genStatus.textContent = `Generated ${unique.length.toLocaleString()} entries${suffix}.`;
     render();
   }, 20);
 }
@@ -1569,6 +1594,7 @@ function render() {
   }
 
   const filter = filterEl.value.trim().toLowerCase();
+
   let rows = unique.filter(e => {
     if (filter) {
       const hay = (e.name + " " + e.personality + " " + e.modifier + " " + e.base + " " + e.tp + " " + e.up)
@@ -1590,7 +1616,7 @@ function render() {
         }
       }
 
-      if (!match) return false; 
+      if (!match) return false;
     }
     if (tierFilter) {
       const val = tierFilter.mode === "speed" ? e.speed : e.base;
