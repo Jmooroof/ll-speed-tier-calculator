@@ -684,6 +684,7 @@
       <div class="scenario-group">
         <span class="scenario-group-title">Boots</span>
         <label class="checkbox-label"><input type="checkbox" id="tblBoots" checked> Boots (+50%)</label>
+        <label class="checkbox-label"><input type="checkbox" id="tblBootsExclusive"> Boots are mutually exclusive with stat boosts</label>
       </div>
       <div class="scenario-group">
         <span class="scenario-group-title">Personalities</span>
@@ -1110,9 +1111,13 @@ const revUpLoomians = new Set([
 const defensivePriorityMinus2 = new Set(["Odasho","Propae"]);
 const armorDownPlus2 = new Set(["Searknight","Falkyrie"]);
 
+// Updated Air-type Loomians from the provided file
 const airLoomians = new Set([
-  "Falkyrie","Eaglit","Torprey","Twittle","Paratweet","Avitross","Goswing",
-  "Ganderveil","Whimpor","Nymaurae","Nymesis","Stratusoar","Stratusoar_Jetwing"
+  "Twittle","Paratweet","Avitross","Zepholen","Snagull","Swirelle","Morphezu",
+  "Cynamoth","Whimpor","Stratusoar","Stratusoar_Jetwing","Pipsee","Dandylil","Whippledriff",
+  "Stricicle","Wintrix","Snagulp","Snagoop","Doreggo","Dreggodyne","Dreggodyne_Tempereign",
+  "Yutiny","Yuteen","Yutyphoon","Goswing","Ganderveil","Nymaurae","Nymesis","Gargolem",
+  "Odoyaga"
 ]);
 
 const formMap = {
@@ -1255,7 +1260,7 @@ function sourceStageLabel(src, stage) {
   return `+${stage} (${src.label})`.replace("+-", "-");
 }
 
-function getSpeedStageOptions(key, hasBoots) {
+function getSpeedStageOptions(key, hasBoots, bootsExclusive) {
   const active = getActiveSources(key);
   const out = [];
   const seen = new Set();
@@ -1288,6 +1293,9 @@ function getSpeedStageOptions(key, hasBoots) {
     }
 
     for (const src of active) {
+      const isRevUp = src.id === "revUp";
+      if (bootsExclusive && !isRevUp) continue;
+
       for (const st of sourceStages(src)) {
         if (st === 1) continue;
         const combinedMult = getStageMult(st) * 1.5;
@@ -1342,7 +1350,7 @@ function buildEntries(loomian, opts, level = 50) {
   if (manualForceBootsOverride.has(key)) hasBoots = true;
 
   const stageOptions = (opts.includeStages)
-    ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots)]
+    ? [{ mult: 1.0, label: null }, ...getSpeedStageOptions(key, opts.includeBoots && hasBoots, opts.bootsExclusive)]
     : [{ mult: 1.0, label: null }];
 
   const windOptions = (opts.includeWind && airLoomians.has(key))
@@ -1410,6 +1418,7 @@ function getTableOptions() {
     includeStages: document.getElementById("tblStages").checked,
     includeWind: document.getElementById("tblWind").checked,
     includeBoots: document.getElementById("tblBoots").checked,
+    bootsExclusive: document.getElementById("tblBootsExclusive").checked,
     includeSluggish: document.getElementById("tblSluggish").checked,
     includeVerySluggish: document.getElementById("tblVerySluggish").checked,
   };
