@@ -1111,7 +1111,6 @@ const revUpLoomians = new Set([
 const defensivePriorityMinus2 = new Set(["Odasho","Propae"]);
 const armorDownPlus2 = new Set(["Searknight","Falkyrie"]);
 
-// Updated Air-type Loomians from the provided file
 const airLoomians = new Set([
   "Twittle","Paratweet","Avitross","Zepholen","Snagull","Swirelle","Morphezu",
   "Cynamoth","Whimpor","Stratusoar","Stratusoar_Jetwing","Pipsee","Dandylil","Whippledriff",
@@ -1591,7 +1590,7 @@ function render() {
         }
       }
 
-      if (!match) return false;   // ✅ now inside `if (filter)`, `match` in scope
+      if (!match) return false; 
     }
     if (tierFilter) {
       const val = tierFilter.mode === "speed" ? e.speed : e.base;
